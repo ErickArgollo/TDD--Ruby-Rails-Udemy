@@ -4,4 +4,8 @@ class Calculator
     def sum(n1, n2)
         n1 + n2
     end 
+
+    def div(a, b)
+        a / b
+    end 
 end

@@ -1,7 +1,7 @@
 require "calculator"
 
 describe "#calculator" do
-  # É interessante utilizar o context caso eu tenha mais de um teste para a mesma classe, se tiver apenas um único teste, posso considerar utilizar o it direto. 
+  # É interessante utilizar o context caso eu tenha mais de um teste para o mesmo método, se tiver apenas um único teste, posso considerar utilizar o it direto. 
   subject(:calc) { Calculator.new() } # caso tivesse um initialize poderia passar aqui. 
   #nessa primeira parte, estou de certa forma renomeando o subject, daí lá embaixo posso utilizar  result = calc.X
   context "#sum" do # #sum pois é uma instância
