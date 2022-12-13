@@ -57,6 +57,59 @@ describe 'Matchers' do
     end
 
     #matchers para arrays
-    
+    it '#include' do  #elementos do array
+        expect([1, 2]).to include(2, 1)
+    end
 
+    it '#match_array, #contain_exactly' do #funciona com elementos exatos, no caso exatamente oq é passado. 
+        expect([1, 2]).to match_array([2, 1])
+    end
+
+    #matcher para ranges
+    it '#cover' do 
+     expect(1..5).to cover(2, 5)
+    end
+end
+
+#one liner + describe instanciado
+describe (1..5), 'teste' do 
+    it { is_expected.to cover(2, 5) }
+end
+
+#composição
+
+describe "ruby" do
+    it { is_expected.to start_with('r').and end_with('y') } #and ou or
+end
+
+describe [1, 7, 9] do
+    it { is_expected.to all((be_even).or be_an(Integer))} 
+end
+
+describe 2.5, '#be_within' do 
+    it { is_expected.to be_within(0.5).of(3)}
+    #vai de 2.5 até 3.5
+end
+
+#before all/ context antes de todos os testes naquele describe ele faz tal coisa no js config.before(:all || :context)
+#after all/ context
+
+#before each(:each || :example), after each, antes de cada teste e depois de cada teste
+
+
+describe 'Atributos' do 
+    let(:pessoa) { Pessoa.new } # o let substitui o before de certa forma, a prinicpal diferença é que nesse caso não vou precisar utilizar uma variavel de instância @ e ele só será invocado nos testes que chamarem a minha váriavel pessoa
+
+    # tem também o let! < nesse caso eu forço a invocar antes de cada teste. independente de ser chamado ou não.
+    it 'have_attributes' do 
+        pessoa.nome = 'Erick'
+        pessoa.idade = 23
+        expect(pessoa).to have_attributes(nome: 'Erick', idade: 23)
+    end
+
+    it 'have_attributes' do 
+        pessoa.nome = 'Teste'
+        pessoa.idade = 20
+        expect(pessoa).to have_attributes(nome: /teste/i, idade: (a_value < 23))
+    end
 end
