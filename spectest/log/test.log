@@ -1469,3 +1469,100 @@ FOREIGN KEY ("customer_id")
   [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
   [1m[36mOrder Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "orders" WHERE "orders"."customer_id" = ?[0m  [["customer_id", 1]]
   [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "customers"[0m
+  [1m[35m (18.5ms)[0m  [1m[35mCREATE TABLE "customers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "email" varchar, "vip" boolean, "days_to_pay" integer, "gender" varchar, "address" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "orders"[0m
+  [1m[35m (5.3ms)[0m  [1m[35mCREATE TABLE "orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "description" varchar, "customer_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (4.8ms)[0m  [1m[35mCREATE INDEX "index_orders_on_customer_id" ON "orders" ("customer_id")[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aorders" ("id" integer NOT NULL PRIMARY KEY, "description" varchar DEFAULT NULL, "customer_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE INDEX "tindex_aorders_on_customer_id" ON "aorders" ("customer_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[32mINSERT INTO "aorders" ("id","description","customer_id","created_at","updated_at")
+                     SELECT "id","description","customer_id","created_at","updated_at" FROM "orders"[0m
+  [1m[35m (0.7ms)[0m  [1m[35mDROP TABLE "orders"[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "orders" ("id" integer NOT NULL PRIMARY KEY, "description" varchar DEFAULT NULL, "customer_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_3dad120da9"
+FOREIGN KEY ("customer_id")
+  REFERENCES "customers" ("id")
+)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE INDEX "index_orders_on_customer_id" ON "orders" ("customer_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "orders" ("id","description","customer_id","created_at","updated_at")
+                     SELECT "id","description","customer_id","created_at","updated_at" FROM "aorders"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "aorders"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (3.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (4.0ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (24.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20221222145833)[0m
+  [1m[35m (3.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20221222121709);
+
+[0m
+  [1m[35m (3.7ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "test"], ["created_at", "2022-12-22 15:46:10.543604"], ["updated_at", "2022-12-22 15:46:10.543604"]]
+  [1m[36mTRANSACTION (2.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "schema_sha1"], ["value", "2a18a3fe2da2a8c957be819f8ae8dfcb0bd3e65c"], ["created_at", "2022-12-22 15:46:10.549278"], ["updated_at", "2022-12-22 15:46:10.549278"]]
+  [1m[36mTRANSACTION (3.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomer Create (0.2ms)[0m  [1m[32mINSERT INTO "customers" ("name", "email", "vip", "days_to_pay", "gender", "address", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?)[0m  [["name", "Claudio Kreiger"], ["email", "email1@email.com"], ["vip", nil], ["days_to_pay", nil], ["gender", nil], ["address", "8483 Balistreri Cape"], ["created_at", "2022-12-22 15:47:47.370319"], ["updated_at", "2022-12-22 15:47:47.370319"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOrder Create (0.2ms)[0m  [1m[32mINSERT INTO "orders" ("description", "customer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["description", "Pedido número - 1"], ["customer_id", 1], ["created_at", "2022-12-22 15:47:47.379249"], ["updated_at", "2022-12-22 15:47:47.379249"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomer Create (0.3ms)[0m  [1m[32mINSERT INTO "customers" ("name", "email", "vip", "days_to_pay", "gender", "address", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?)[0m  [["name", "Kelly Kilback"], ["email", "email2@email.com"], ["vip", nil], ["days_to_pay", nil], ["gender", nil], ["address", "9934 Weissnat Village"], ["created_at", "2022-12-22 15:47:47.397335"], ["updated_at", "2022-12-22 15:47:47.397335"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOrder Create (0.1ms)[0m  [1m[32mINSERT INTO "orders" ("description", "customer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["description", "Pedido número - 2"], ["customer_id", 1], ["created_at", "2022-12-22 15:47:47.399294"], ["updated_at", "2022-12-22 15:47:47.399294"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomer Create (0.1ms)[0m  [1m[32mINSERT INTO "customers" ("name", "email", "vip", "days_to_pay", "gender", "address", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?)[0m  [["name", "Ralph Jerde"], ["email", "email3@email.com"], ["vip", nil], ["days_to_pay", nil], ["gender", nil], ["address", "93480 Santina Walks"], ["created_at", "2022-12-22 15:47:47.401829"], ["updated_at", "2022-12-22 15:47:47.401829"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOrder Create (0.1ms)[0m  [1m[32mINSERT INTO "orders" ("description", "customer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["description", "Pedido número - 3"], ["customer_id", 2], ["created_at", "2022-12-22 15:47:47.403270"], ["updated_at", "2022-12-22 15:47:47.403270"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomer Create (0.1ms)[0m  [1m[32mINSERT INTO "customers" ("name", "email", "vip", "days_to_pay", "gender", "address", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?)[0m  [["name", "Terica Wehner"], ["email", "email4@email.com"], ["vip", nil], ["days_to_pay", nil], ["gender", nil], ["address", "5395 Nikolaus Spur"], ["created_at", "2022-12-22 15:47:47.405830"], ["updated_at", "2022-12-22 15:47:47.405830"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOrder Create (0.1ms)[0m  [1m[32mINSERT INTO "orders" ("description", "customer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["description", "Pedido número - 4"], ["customer_id", 3], ["created_at", "2022-12-22 15:47:47.407426"], ["updated_at", "2022-12-22 15:47:47.407426"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCustomer Create (0.2ms)[0m  [1m[32mINSERT INTO "customers" ("name", "email", "vip", "days_to_pay", "gender", "address", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?)[0m  [["name", "Linette Wyman DC"], ["email", "email5@email.com"], ["vip", nil], ["days_to_pay", nil], ["gender", nil], ["address", "1484 Mosciski Turnpike"], ["created_at", "2022-12-22 15:47:47.412388"], ["updated_at", "2022-12-22 15:47:47.412388"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOrder Create (0.1ms)[0m  [1m[32mINSERT INTO "orders" ("description", "customer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["description", "Pedido número - 5"], ["customer_id", 1], ["created_at", "2022-12-22 15:47:47.414058"], ["updated_at", "2022-12-22 15:47:47.414058"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOrder Create (0.1ms)[0m  [1m[32mINSERT INTO "orders" ("description", "customer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["description", "Pedido número - 6"], ["customer_id", 1], ["created_at", "2022-12-22 15:47:47.415352"], ["updated_at", "2022-12-22 15:47:47.415352"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOrder Create (0.1ms)[0m  [1m[32mINSERT INTO "orders" ("description", "customer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["description", "Pedido número - 7"], ["customer_id", 1], ["created_at", "2022-12-22 15:47:47.416735"], ["updated_at", "2022-12-22 15:47:47.416735"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mOrder Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "orders" WHERE "orders"."customer_id" = ?[0m  [["customer_id", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m

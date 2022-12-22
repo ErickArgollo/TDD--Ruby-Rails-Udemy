@@ -1,5 +1,7 @@
 require 'rails_helper'
 
+#além do create tenho também o  build_stubbed, que faz um mock. O create cria um banco de dados temporário que é apagado ao final de cada teste, por isso não consigo visualizar no rails console utilizando o Customer.all, por exemplo.
+
 RSpec.describe Customer, type: :model do
   it "Create new Costumer" do
     customer = create(:customer)

@@ -11,6 +11,7 @@ FactoryBot.define do
     #sequence(:email, numero que vai começar)
 
     name { Faker::Name.name }
+    address { Faker::Address.street_address}
     
     ##Ideia de Herança
      factory :customer_vip do
