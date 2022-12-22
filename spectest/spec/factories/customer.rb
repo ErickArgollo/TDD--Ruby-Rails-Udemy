@@ -3,11 +3,14 @@ FactoryBot.define do
     #transient > serão ignorados no teste, serve para que possamos controlar alguma coisa específica na nossa factory, baseado nisso eu faço o meu after 
     transient do 
         upcased { false }
+        qtt_orders { 3 }
     end
 
+    #email { Faker::Internet.email }
+    sequence(:email) { |n| "email#{n}@email.com" } #toda vez que chamar essa factory, ele vai colocar numerações diferentes
+    #sequence(:email, numero que vai começar)
 
     name { Faker::Name.name }
-    email { Faker::Internet.email }
     
     ##Ideia de Herança
      factory :customer_vip do
@@ -25,8 +28,13 @@ FactoryBot.define do
         gender { "M" } 
      end
 
-     factory :customer_default_male, traits: [:default, :male] #outra forma de fazer, juntando as informações em um cara só.
+     trait :with_orders do 
+        after(:create) do |customer, evaluator|
+            create_list(:order, evaluator.qtt_orders, customer: customer) #passo esse customer como o elemento atual da minha factory, já que order tem como referencia customer que é cada cliente
+         end # o evaluator é usado para acessar o valor de qtt_order e passar ele como argumento pro create_list.
+     end
 
+     factory :customer_default_male, traits: [:default, :male] #outra forma de fazer, juntando as informações em um cara só.
 
     #executado após o create
      after(:create) do |customer, evaluator|
